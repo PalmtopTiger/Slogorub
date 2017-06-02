@@ -4,21 +4,20 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = Slogorub
 TEMPLATE = app
 
+QT += core gui widgets
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS += mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS += mainwindow.ui
 
 RESOURCES += Slogorub.qrc
 
 RC_FILE = Slogorub.rc
+
+TARGET = Slogorub
