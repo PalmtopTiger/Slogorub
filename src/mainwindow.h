@@ -17,9 +17,7 @@ public:
 
 private slots:
     void on_btExit_clicked();
-
     void on_btClear_clicked();
-
     void on_btSlash_clicked();
 
 private:

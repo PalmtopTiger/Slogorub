@@ -1,4 +1,5 @@
 #include <QDesktopWidget>
+#include <QRegularExpression>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -29,32 +30,22 @@ void MainWindow::on_btClear_clicked()
 
 void MainWindow::on_btSlash_clicked()
 {
-    QRegExp tester("(?:^\\s*|: \\d+)$");
-    QRegExp counter("(ya|yu|yo|y(?![auo])|[aeiouаеёиоуыэюя])", Qt::CaseInsensitive);
-    QRegExp slasher("((?:ya|yu|yo|y(?![auo])|[aeiouаеёиоуыэюя])(?:[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ](?:[ьъ](?=[aeiouyаеёиоуыэюя])|[ьъ]?(?![aeiouyаеёиоуыэюя])))?)(?=[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщьъ]*[aeiouyаеёиоуыэюя])", Qt::CaseInsensitive);
-    QString slasherReplace = "\\1-";
+    const QRegularExpression counter("(?:ya|yu|yo|y(?![auo])|[aeiouаеёиоуыэюя])", QRegularExpression::CaseInsensitiveOption);
+    const QRegularExpression slasher("((?:ya|yu|yo|y(?![auo])|[aeiouаеёиоуыэюя])(?:[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ](?:[ьъ](?=[aeiouyаеёиоуыэюя])|[ьъ]?(?![aeiouyаеёиоуыэюя])))?)(?=[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщьъ]*[aeiouyаеёиоуыэюя])", QRegularExpression::CaseInsensitiveOption);
+    const QString slasherReplace = "\\1-";
 
-    int count, pos;
+    int count;
     QStringList result;
-    QStringList lines = ui->textEdit->toPlainText().split("\n");
-    foreach (QString line, lines)
+    const QStringList lines = ui->textEdit->toPlainText().split("\n");
+    for (QString line : lines)
     {
-        if (tester.indexIn(line) != -1)
+        if (line.contains(" : "))
         {
             result.push_back(line);
         }
         else
         {
-            pos = 0;
-            count = 0;
-            while (pos >= 0)
-            {
-                pos = counter.indexIn(line, pos);
-                if (pos >= 0) {
-                    pos += counter.matchedLength();
-                    ++count;
-                }
-            }
+            count = line.count(counter);
             line.replace(slasher, slasherReplace);
             line += " : " + QString::number(count);
             result.push_back(line);
