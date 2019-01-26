@@ -47,7 +47,7 @@ void MainWindow::on_btSlash_clicked()
         {
             count = line.count(counter);
             line.replace(slasher, slasherReplace);
-            line += " : " + QString::number(count);
+            line.append(QString(" : %1").arg(count));
             result.push_back(line);
         }
     }
