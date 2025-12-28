@@ -57,7 +57,7 @@ void MainWindow::on_btSlash_clicked()
     QStringList result;
     const QStringList &lines = ui->textEdit->toPlainText().split("\n");
     for (QString line : lines) {
-        if (line.contains(" : ")) {
+        if (line.contains(" : ") || line.trimmed().isEmpty()) {
             result.push_back(line);
         } else {
             count = line.count(counter);
