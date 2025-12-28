@@ -16,8 +16,11 @@ HEADERS += mainwindow.h
 
 FORMS += mainwindow.ui
 
-RESOURCES += Slogorub.qrc
+RC_ICONS = main.ico
 
-RC_FILE = Slogorub.rc
+VERSION = 1.0.1
+QMAKE_TARGET_COMPANY = "Unlimited Web Works"
+QMAKE_TARGET_DESCRIPTION = "Program for dividing text into syllables"
+QMAKE_TARGET_COPYRIGHT = "(C) Andrey Efremov"
 
 TARGET = Slogorub

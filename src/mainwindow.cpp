@@ -1,6 +1,6 @@
 /*
  * This file is part of Slogorub.
- * Copyright (C) 2012-2019  Andrey Efremov <duxus@yandex.ru>
+ * Copyright (C) 2012-2025  Andrey Efremov <duxus@yandex.ru>
  *
  * Slogorub is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDesktopWidget>
+#include <QStyle>
+#include <QScreen>
 #include <QRegularExpression>
 
 
@@ -28,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->move(QApplication::desktop()->screenGeometry().center() - this->rect().center());
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->primaryScreen()->availableGeometry()));
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +39,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btExit_clicked()
 {
-    QApplication::exit();
+    qApp->quit();
 }
 
 void MainWindow::on_btClear_clicked()
@@ -52,17 +53,13 @@ void MainWindow::on_btSlash_clicked()
     const QRegularExpression slasher("((?:ya|yu|yo|y(?![auo])|[aeiouаеёиоуыэюя])(?:[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ](?:[ьъ](?=[aeiouyаеёиоуыэюя])|[ьъ]?(?![aeiouyаеёиоуыэюя])))?)(?=[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщьъ]*[aeiouyаеёиоуыэюя])", QRegularExpression::CaseInsensitiveOption);
     const QString slasherReplace = "\\1-";
 
-    int count;
+    qsizetype count;
     QStringList result;
-    const QStringList lines = ui->textEdit->toPlainText().split("\n");
-    for (QString line : lines)
-    {
-        if (line.contains(" : "))
-        {
+    const QStringList &lines = ui->textEdit->toPlainText().split("\n");
+    for (QString line : lines) {
+        if (line.contains(" : ")) {
             result.push_back(line);
-        }
-        else
-        {
+        } else {
             count = line.count(counter);
             line.replace(slasher, slasherReplace);
             line.append(QString(" : %1").arg(count));
